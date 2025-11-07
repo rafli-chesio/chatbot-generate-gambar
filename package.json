@@ -1,0 +1,9 @@
+{
+  "name": "gemini-image-generator",
+  "version": "1.0.0",
+  "description": "Secure Text-to-Image Generator with Gemini API",
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^1.29.0"
+  }
+}

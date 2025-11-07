@@ -1,8 +1,6 @@
-// script.js (Versi Lengkap dan Benar)
-
 document.addEventListener('DOMContentLoaded', () => {
     
-    console.log("Javascript terhubung!"); // <-- Ini yang Anda lihat di log sebelumnya
+    console.log("Javascript terhubung!"); 
     
     // Ambil elemen-elemen yang dibutuhkan
     const promptInput = document.getElementById('prompt-input');
@@ -10,10 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingSpinner = document.getElementById('loading-spinner');
     const resultImage = document.getElementById('result-image');
 
-    // Tambahkan event listener ke tombol "Generate"
     generateBtn.addEventListener('click', async () => {
         
-        console.log('Tombol diklik!'); // <-- Ini baris 21 Anda
+        console.log('Tombol diklik!'); 
         
         const prompt = promptInput.value;
 
@@ -22,17 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log(`Prompt pengguna: ${prompt}`); // <-- Ini baris 32 Anda
+        console.log(`Prompt pengguna: ${prompt}`); 
 
-        // --- PASTIKAN SEMUA KODE DI BAWAH INI ADA! ---
-        // --- INI KEMUNGKINAN BESAR HILANG DARI FILE ANDA ---
-
-        // 1. Tampilkan status loading
+        // Nampilin status loading
         loadingSpinner.style.display = 'block';
         resultImage.style.display = 'none';
 
         try {
-            // 2. Kirim permintaan ke backend
+            // Kirim request ke backend
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
@@ -46,21 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errorData.error || 'Gagal menghasilkan gambar.');
             }
 
-            // 3. Ambil data JSON dan tampilkan gambar
+            // Ambil data JSON dan tampilkan gambar
             const data = await response.json();
             resultImage.src = 'data:image/png;base64,' + data.base64Image;
             resultImage.style.display = 'block';
 
         } catch (error) {
-            // 4. Tangani error
+            // Untuk nanganin error
             console.error('Error:', error);
             alert('Terjadi kesalahan: ' + error.message);
         
         } finally {
-            // 5. Sembunyikan loading (apapun yang terjadi)
+            // Ngehide loading, saran Heri
             loadingSpinner.style.display = 'none';
         }
         
-        // --- AKHIR DARI BAGIAN YANG HILANG ---
     });
 });

@@ -61,7 +61,6 @@ p {
     background-color: #0056b3;
 }
 
-/* Styling untuk Loader */
 .loader-container {
     margin-top: 20px;
 }
@@ -84,10 +83,10 @@ p {
     100% { transform: rotate(360deg); }
 }
 
-/* Styling untuk Hasil Gambar */
+
 .result-container {
     margin-top: 20px;
-    min-height: 100px; /* Memberi ruang agar tidak "lompat" */
+    min-height: 100px; 
 }
 
 #result-image {

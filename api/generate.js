@@ -1,14 +1,10 @@
-// File: /api/generate.js
-// VERSI YANG SUDAH DIPERBAIKI
-
 import { GoogleGenAI } from "@google/genai";
 
-// Inisialisasi seperti sebelumnya
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
 // Fungsi handler default untuk Vercel
 export default async function handler(req, res) {
-  // Hanya izinkan metode POST
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -23,13 +19,9 @@ export default async function handler(req, res) {
 
     console.log(`Menerima permintaan untuk prompt: ${prompt}`);
     
-    // --- INI ADALAH PERBAIKANNYA ---
-    
-    // 1. Panggil API menggunakan 'models.generateContent'
-    //    Bukan 'genAI.getGenerativeModel(...).generateContent(...)'
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
-      contents: prompt, // <-- Parameter yang benar adalah 'contents', bukan 'prompt'
+      contents: prompt,
     });
 
     // 2. Akses 'candidates' langsung dari 'response'
@@ -54,7 +46,6 @@ export default async function handler(req, res) {
       console.log("Full API Response:", JSON.stringify(response, null, 2));
       return res.status(500).json({ error: 'Failed to generate image. Invalid API response.' });
     }
-    // --- AKHIR DARI PERBAIKAN ---
 
   } catch (error) {
     // Tangani error jika panggilan API gagal (misal, API key salah)

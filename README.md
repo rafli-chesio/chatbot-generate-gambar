@@ -4,7 +4,7 @@ Ini adalah proyek aplikasi web yang mendemonstrasikan cara membuat generator tek
 
 Fokus utama proyek ini adalah pada **arsitektur client-server yang aman**. Alih-alih mengekspos API Key Google di frontend (browser), proyek ini menggunakan Vercel Serverless Function sebagai backend perantara untuk melindungi API key dan rahasia lainnya.
 
-![Pratinjau Aplikasi](assets/images/screenshot-aplikasi.png)
+![Pratinjau Aplikasi](https://raw.githubusercontent.com/username/repo/main/assets/images/screenshot-aplikasi.png)
 
 ---
 

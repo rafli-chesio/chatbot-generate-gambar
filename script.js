@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- PASTIKAN SEMUA KODE DI BAWAH INI ADA! ---
         // --- INI KEMUNGKINAN BESAR HILANG DARI FILE ANDA ---
-
+        console.log('Mulai blok TRY...');
         // 1. Tampilkan status loading
         loadingSpinner.style.display = 'block';
         resultImage.style.display = 'none';

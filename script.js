@@ -7,7 +7,7 @@ const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-
 
 const promptInput = document.getElementById("prompt-input");
 const generateBtn = document.getElementById("generate-btn");
-const loadingText = document.getElementById("loading-text");
+const loadingText = document.getElementById("loading-spinner");
 const resultImage = document.getElementById("result-image");
 
 // 2. Menambahkan "Pendengar Acara" (Event Listener) ke tombol

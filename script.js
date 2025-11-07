@@ -1,6 +1,9 @@
-// Menunggu sampai semua elemen HTML dimuat
-document.addEventListener('DOMContentLoaded', () => {
+// script.js (Versi Lengkap dan Benar)
 
+document.addEventListener('DOMContentLoaded', () => {
+    
+    console.log("Javascript terhubung!"); // <-- Ini yang Anda lihat di log sebelumnya
+    
     // Ambil elemen-elemen yang dibutuhkan
     const promptInput = document.getElementById('prompt-input');
     const generateBtn = document.getElementById('generate-btn');
@@ -10,20 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tambahkan event listener ke tombol "Generate"
     generateBtn.addEventListener('click', async () => {
         
+        console.log('Tombol diklik!'); // <-- Ini baris 21 Anda
+        
         const prompt = promptInput.value;
 
-        // Validasi: jangan kirim jika prompt kosong
         if (!prompt) {
             alert('Harap masukkan prompt terlebih dahulu.');
             return;
         }
 
-        // Tampilkan status loading dan sembunyikan gambar sebelumnya
+        console.log(`Prompt pengguna: ${prompt}`); // <-- Ini baris 32 Anda
+
+        // --- PASTIKAN SEMUA KODE DI BAWAH INI ADA! ---
+        // --- INI KEMUNGKINAN BESAR HILANG DARI FILE ANDA ---
+
+        // 1. Tampilkan status loading
         loadingSpinner.style.display = 'block';
         resultImage.style.display = 'none';
 
         try {
-            // Kirim permintaan ke backend /api/generate
+            // 2. Kirim permintaan ke backend
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
@@ -33,27 +42,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                // Jika server merespons dengan error (spt 400, 500)
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Gagal menghasilkan gambar.');
             }
 
-            // Ambil data JSON dari respons
+            // 3. Ambil data JSON dan tampilkan gambar
             const data = await response.json();
-
-            // Tampilkan gambar
-            // 'data.base64Image' berisi string Base64 yang dikirim dari backend
             resultImage.src = 'data:image/png;base64,' + data.base64Image;
             resultImage.style.display = 'block';
 
         } catch (error) {
-            // Tangani error jaringan atau error dari server
+            // 4. Tangani error
             console.error('Error:', error);
             alert('Terjadi kesalahan: ' + error.message);
         
         } finally {
-            // Apapun yang terjadi (sukses atau gagal), sembunyikan loading
+            // 5. Sembunyikan loading (apapun yang terjadi)
             loadingSpinner.style.display = 'none';
         }
+        
+        // --- AKHIR DARI BAGIAN YANG HILANG ---
     });
 });

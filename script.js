@@ -1,47 +1,59 @@
+// Menunggu sampai semua elemen HTML dimuat
+document.addEventListener('DOMContentLoaded', () => {
 
-console.log("JavaScript terhubung!");
+    // Ambil elemen-elemen yang dibutuhkan
+    const promptInput = document.getElementById('prompt-input');
+    const generateBtn = document.getElementById('generate-btn');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const resultImage = document.getElementById('result-image');
 
-const API_KEY = "AIzaSyBfAjuvJjVI7flaj89QttF7H_PAzNdwv90";  
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    // Tambahkan event listener ke tombol "Generate"
+    generateBtn.addEventListener('click', async () => {
+        
+        const prompt = promptInput.value;
 
+        // Validasi: jangan kirim jika prompt kosong
+        if (!prompt) {
+            alert('Harap masukkan prompt terlebih dahulu.');
+            return;
+        }
 
-const promptInput = document.getElementById("prompt-input");
-const generateBtn = document.getElementById("generate-btn");
-const loadingText = document.getElementById("loading-spinner");
-const resultImage = document.getElementById("result-image");
+        // Tampilkan status loading dan sembunyikan gambar sebelumnya
+        loadingSpinner.style.display = 'block';
+        resultImage.style.display = 'none';
 
-// 2. Menambahkan "Pendengar Acara" (Event Listener) ke tombol
-// Ini berarti: "Hei JavaScript, awasi tombol 'generateBtn'. 
-// Jika ada yang meng-KLIK-nya, jalankan fungsi bernama 'handleImageGeneration'."
-generateBtn.addEventListener("click", handleImageGeneration);
+        try {
+            // Kirim permintaan ke backend /api/generate
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt }),
+            });
 
+            if (!response.ok) {
+                // Jika server merespons dengan error (spt 400, 500)
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Gagal menghasilkan gambar.');
+            }
 
-// 3. Membuat fungsi (set instruksi) yang akan dijalankan saat tombol diklik
-function handleImageGeneration() {
-    console.log("Tombol diklik!");
+            // Ambil data JSON dari respons
+            const data = await response.json();
 
-    // Ambil teks yang diketik pengguna dari kotak input
-    const prompt = promptInput.value;
+            // Tampilkan gambar
+            // 'data.base64Image' berisi string Base64 yang dikirim dari backend
+            resultImage.src = 'data:image/png;base64,' + data.base64Image;
+            resultImage.style.display = 'block';
 
-    // Periksa apakah pengguna mengetik sesuatu
-    if (!prompt) {
-        alert("Harap masukkan teks terlebih dahulu!");
-        return; // Hentikan fungsi jika tidak ada teks
-    }
-
-    console.log(`Prompt pengguna: ${prompt}`);
-
-    // TAMPILKAN pesan "loading..."
-    // Kita menghapus class 'hidden' agar elemennya muncul
-    loadingText.classList.remove("hidden");
-
-    // SEMBUNYIKAN gambar (jika ada gambar lama)
-    // Kita menambahkan class 'hidden' agar elemennya hilang
-    resultImage.classList.add("hidden");
-
-    // -----
-    // NANTI DI SINI...
-    // Kita akan menambahkan kode untuk memanggil API AI.
-    // Untuk sekarang, kita biarkan kosong.
-    // -----
-}
+        } catch (error) {
+            // Tangani error jaringan atau error dari server
+            console.error('Error:', error);
+            alert('Terjadi kesalahan: ' + error.message);
+        
+        } finally {
+            // Apapun yang terjadi (sukses atau gagal), sembunyikan loading
+            loadingSpinner.style.display = 'none';
+        }
+    });
+});

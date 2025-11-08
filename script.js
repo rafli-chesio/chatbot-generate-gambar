@@ -47,8 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             // Untuk nanganin error
-            console.error('Error:', error);
-            alert('Terjadi kesalahan: ' + error.message);
+           if (!response.ok) {
+                // --- UBAH BAGIAN INI ---
+                const errorData = await response.json();
+                // Sekarang kita akan menampilkan error 'details' jika ada
+                let errorMessage = errorData.error || 'Gagal menghasilkan gambar.';
+                if (errorData.details) {
+                    errorMessage += ` (Alasan: ${errorData.details})`;
+                }
+                throw new Error(errorMessage);
+                // --- AKHIR PERUBAHAN ---
+            }
+
+            const data = await response.json();
         
         } finally {
             // Ngehide loading, saran Heri

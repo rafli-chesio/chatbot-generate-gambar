@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-to-Image Generator</title>
+    <title>Text-to-Image AI Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="container">
         <h1>Text-to-Image AI Generator</h1>
-        <p></p>
+        <p>Gunakan arsitektur yang aman (Client-Server) dengan Vercel & Gemini API.</p>
         
         <div class="input-group">
             <input type="text" id="prompt-input" placeholder="Masukkan prompt (cth: kucing astronot di bulan)">
@@ -17,12 +22,12 @@
         </div>
         
         <div id="loading-spinner" class="loader-container" style="display: none;">
-            <div class="loader"></div>  
+            <div class="loader"></div>
             <p>Sedang membuat gambar...</p>
         </div>
 
-        <div class="result-container">
-            <img id="result-image" src="" alt="Gambar yang dihasilkan AI" style="display: none;">
+        <div class="result-container" style="display: none;">
+            <img id="result-image" src="" alt="Gambar yang dihasilkan AI">
         </div>
     </div>
 

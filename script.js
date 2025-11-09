@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Tambahkan event listener ke tombol "Generate"
-    generateBtn.addEventListener('click', async () => {
+    generateBtn.addEventListener('click', async () => { 
         
         console.log('Tombol diklik!');
         

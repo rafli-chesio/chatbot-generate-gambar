@@ -1,6 +1,13 @@
+/* =================================
+   RESET & FONT DASAR
+   ================================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f4f7f6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5; /* Background abu-abu muda */
     color: #333;
     display: flex;
     justify-content: center;
@@ -10,72 +17,104 @@ body {
     padding: 20px;
 }
 
+/* =================================
+   CONTAINER UTAMA (TAMPILAN KARTU)
+   ================================= */
 .container {
     background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    padding: 32px 40px; /* Padding lebih besar */
+    border-radius: 16px; /* Sudut lebih bulat */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07); /* Bayangan lebih halus */
     width: 100%;
-    max-width: 600px;
+    max-width: 640px;
     text-align: center;
+    border: 1px solid #e8e8e8;
 }
 
 h1 {
+    font-size: 28px;
     color: #222;
     margin-top: 0;
+    margin-bottom: 12px;
 }
 
 p {
-    color: #555;
+    color: #666; /* Warna teks deskripsi */
     font-size: 16px;
+    margin-bottom: 32px;
+    line-height: 1.5;
+}
+
+/* =================================
+   GRUP INPUT & TOMBOL
+   ================================= */
+.input-group {
+    display: flex;
+    gap: 12px;
     margin-bottom: 24px;
 }
 
-.input-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
 #prompt-input {
-    flex-grow: 1;
-    padding: 12px 16px;
+    flex-grow: 1; /* Input memakan sisa ruang */
+    padding: 14px 18px;
     font-size: 16px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s; /* Transisi halus */
+}
+
+/* Efek saat input di-klik (focus) */
+#prompt-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.15); /* Efek glow biru */
+    outline: none;
 }
 
 #generate-btn {
-    padding: 12px 20px;
+    padding: 14px 24px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600; /* Sedikit lebih tebal */
     color: #fff;
-    background-color: #007bff;
+    background: linear-gradient(45deg, #007bff, #0056b3); /* Gradient biru */
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Efek saat mouse di atas tombol */
 #generate-btn:hover {
-    background-color: #0056b3;
+    transform: translateY(-2px); /* Tombol sedikit terangkat */
+    box-shadow: 0 6px 15px rgba(0,123,255,0.25);
 }
 
+/* Efek saat tombol nonaktif (loading) */
+#generate-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =================================
+   LOADER & HASIL GAMBAR
+   ================================= */
 .loader-container {
     margin-top: 20px;
-}
-.loader {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #007bff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-}
-.loader-container p {
+    color: #555;
     font-weight: 500;
-    color: #007bff;
+}
+
+/* Animasi loader baru (lebih modern) */
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 4px solid #007bff;
+    border-right: 4px solid transparent;
+    animation: spin 1s linear infinite;
+    margin: 20px auto 10px;
 }
 
 @keyframes spin {
@@ -83,17 +122,66 @@ p {
     100% { transform: rotate(360deg); }
 }
 
-
 .result-container {
-    margin-top: 20px;
-    min-height: 100px; 
+    margin-top: 24px;
+    width: 100%;
+    /* Menjaga rasio aspek kotak (1:1) */
+    position: relative;
+    padding-bottom: 100%; /* Ini trik untuk aspect-ratio 1:1 */
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    display: none; /* Default tersembunyi */
 }
 
 #result-image {
+    /* Gambar mengisi penuh kontainer */
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 512px;
-    height: auto;
-    border-radius: 8px;
+    height: 100%;
+    object-fit: cover; /* Gambar akan ter-crop, bukan gepeng */
+    border-radius: 12px;
     border: 1px solid #eee;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* =================================
+   RESPONSIVE (Tampilan HP)
+   ================================= */
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 24px 20px;
+    }
+
+    .input-group {
+        flex-direction: column; /* Input dan tombol akan menumpuk */
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 15px;
+        margin-bottom: 24px;
+    }
+
+    .result-container {
+        /*
+          Di HP, kita tidak paksa 1:1. Kita biarkan gambar
+          menentukan tingginya sendiri agar tidak ter-crop.
+          Ganti ini jika Anda lebih suka 1:1.
+        */
+        padding-bottom: 0; /* Hapus paksa 1:1 */
+        height: auto;
+    }
+
+    #result-image {
+        position: relative; /* Hapus posisi absolut */
+        height: auto; /* Biarkan tinggi gambar otomatis */
+    }
 }

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const loadingSpinner = document.getElementById('loading-spinner');
     const resultImage = document.getElementById('result-image');
+    const resultContainer = document.querySelector('.result-container');
 
     if (!promptInput || !generateBtn || !loadingSpinner || !resultImage) {
         console.error("Error: Satu atau lebih elemen DOM (input, tombol, loader, gambar) tidak ditemukan.");
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Prompt pengguna: ${prompt}`);
 
         loadingSpinner.style.display = 'block';
-        resultImage.style.display = 'none';
+        if (resultContainer) resultContainer.style.display = 'none';
         generateBtn.disabled = true; 
 
         try {
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             resultImage.src = 'data:image/png;base64,' + data.base64Image;
-            resultImage.style.display = 'block';
+            if (resultContainer) resultContainer.style.display = 'block';
 
         } catch (error) {
        

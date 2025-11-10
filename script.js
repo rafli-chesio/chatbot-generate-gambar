@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log(`Prompt pengguna: ${prompt}`); // Log disederhanakan
+        console.log(`Buatkan gambar: ${prompt}`); // Log disederhanakan
 
         // ... (UI Feedback tetap sama)
         loadingSpinner.style.display = 'block';

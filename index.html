@@ -13,10 +13,12 @@
     
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-mode"> <header class="navbar">
+<body class="dark-mode">
+
+    <header class="navbar">
         <div class="logo">
             <i class="fa-solid fa-bolt"></i>
-            <span></span>
+            <span>FlashGen</span>
         </div>
         <div class="nav-title">
             AI Image Generator
@@ -35,19 +37,9 @@
                 
                 <div class="form-group">
                     <label for="prompt-input">Prompt</label>
-                    <textarea id="prompt-input" rows="4" placeholder="Cth: Kucing astronot sinematik, duduk di bulan, melihat ke bumi, 4k"></textarea>
+                    <textarea id="prompt-input" rows="4" placeholder="Cth: Kucing astronot sinematik..."></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="style-select">Gaya Gambar</label>
-                    <select id="style-select">
-                        <option value="cinematic">Sinematik</option>
-                        <option value="anime">Anime</option>
-                        <option value="photorealistic">Foto Realistis</option>
-                        <option value="low_poly">Low Poly</option>
-                    </select>
-                </div>
-
                 <button id="generate-btn">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     Generate

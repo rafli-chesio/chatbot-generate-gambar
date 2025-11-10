@@ -1,120 +1,251 @@
 /* =================================
-   RESET & FONT DASAR
+   1. VARIABEL ROOT & TEMA
+   ================================= */
+:root {
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    --primary-neon: #8A2BE2; /* Ungu Neon */
+    --secondary-neon: #00BFFF; /* Biru Elektrik */
+    --text-primary: #e5e7eb; /* Putih keabuan */
+    --text-secondary: #9ca3af;
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    --dark-bg: #0c0a09; /* Hitam pekat */
+    --dark-panel-bg: rgba(26, 26, 26, 0.5); /* Latar glassmorphism */
+    --dark-panel-glow: rgba(138, 43, 226, 0.3); /* Glow ungu */
+    
+    --light-bg: #f0f2f5;
+    --light-panel-bg: rgba(255, 255, 255, 0.7);
+    --light-panel-glow: rgba(0, 191, 255, 0.3); /* Glow biru */
+}
+
+/* =================================
+   2. DASAR & DARK MODE
    ================================= */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5; /* Background abu-abu muda */
-    color: #333;
+    font-family: var(--font-body);
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    background-image: radial-gradient(circle at 1% 1%, rgba(138, 43, 226, 0.2) 0%, transparent 30%), 
+                      radial-gradient(circle at 99% 99%, rgba(0, 191, 255, 0.2) 0%, transparent 30%);
+    background-attachment: fixed;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-mode {
+    --dark-bg: var(--light-bg);
+    --dark-panel-bg: var(--light-panel-bg);
+    --dark-panel-glow: var(--light-panel-glow);
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* =================================
+   3. NAVBAR
+   ================================= */
+.navbar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-}
-
-/* =================================
-   CONTAINER UTAMA (TAMPILAN KARTU)
-   ================================= */
-.container {
-    background-color: #ffffff;
-    padding: 32px 40px; /* Padding lebih besar */
-    border-radius: 16px; /* Sudut lebih bulat */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07); /* Bayangan lebih halus */
+    padding: 16px 5%;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 640px;
-    text-align: center;
-    border: 1px solid #e8e8e8;
+    z-index: 100;
 }
 
-h1 {
-    font-size: 28px;
-    color: #222;
-    margin-top: 0;
-    margin-bottom: 12px;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--primary-neon);
 }
 
-p {
-    color: #666; /* Warna teks deskripsi */
-    font-size: 16px;
-    margin-bottom: 32px;
-    line-height: 1.5;
+.nav-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.theme-toggle {
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--secondary-neon);
+    transition: color 0.3s, transform 0.3s;
+}
+.theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
 }
 
 /* =================================
-   GRUP INPUT & TOMBOL
+   4. LAYOUT UTAMA (DUA KOLOM)
    ================================= */
-.input-group {
+.main-container {
+    padding-top: 100px; /* (Tinggi navbar + 20px) */
+    padding-bottom: 40px;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* Kolom kiri lebih kecil */
+    gap: 24px;
+    padding: 0 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* =================================
+   5. PANEL (KONTROL & GAMBAR)
+   ================================= */
+.controls-panel,
+.image-panel {
+    background: var(--dark-panel-bg);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 0 40px var(--dark-panel-glow);
+    transition: all 0.3s ease;
+}
+
+.image-panel {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px; /* Tinggi minimum panel gambar */
+    position: relative; /* Untuk loader */
+    overflow: hidden;
+}
+
+/* =================================
+   6. ELEMEN FORM (KOLOM KIRI)
+   ================================= */
+.controls-panel h2 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.controls-panel p {
+    color: var(--text-secondary);
     margin-bottom: 24px;
 }
 
-#prompt-input {
-    flex-grow: 1; /* Input memakan sisa ruang */
-    padding: 14px 18px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    transition: border-color 0.2s, box-shadow 0.2s; /* Transisi halus */
+.form-group {
+    margin-bottom: 20px;
 }
 
-/* Efek saat input di-klik (focus) */
-#prompt-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0,123,255,0.15); /* Efek glow biru */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+#prompt-input,
+#style-select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-family: var(--font-body);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#prompt-input:focus,
+#style-select:focus {
     outline: none;
+    border-color: var(--primary-neon);
+    box-shadow: 0 0 10px var(--primary-neon);
 }
 
 #generate-btn {
-    padding: 14px 24px;
-    font-size: 16px;
-    font-weight: 600; /* Sedikit lebih tebal */
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: var(--font-heading);
     color: #fff;
-    background: linear-gradient(45deg, #007bff, #0056b3); /* Gradient biru */
+    background: var(--primary-neon);
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    
+    /* Efek Neon */
+    box-shadow: 0 0 15px var(--primary-neon);
+    transition: all 0.3s ease;
 }
 
-/* Efek saat mouse di atas tombol */
 #generate-btn:hover {
-    transform: translateY(-2px); /* Tombol sedikit terangkat */
-    box-shadow: 0 6px 15px rgba(0,123,255,0.25);
+    transform: scale(1.02);
+    box-shadow: 0 0 25px var(--primary-neon), 0 0 40px var(--secondary-neon);
+    background: linear-gradient(45deg, var(--primary-neon), var(--secondary-neon));
 }
 
-/* Efek saat tombol nonaktif (loading) */
 #generate-btn:disabled {
-    background: #ccc;
+    background: #555;
+    color: #999;
     cursor: not-allowed;
-    transform: none;
     box-shadow: none;
+    transform: none;
+}
+
+/* Kotak Error (pengganti alert) */
+.error-box {
+    display: none; /* diatur oleh JS */
+    margin-top: 20px;
+    padding: 12px;
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    color: #ffcccc;
+    border-radius: 8px;
+    font-size: 15px;
 }
 
 /* =================================
-   LOADER & HASIL GAMBAR
+   7. LOADER & HASIL GAMBAR (KOLOM KANAN)
    ================================= */
-.loader-container {
-    margin-top: 20px;
-    color: #555;
-    font-weight: 500;
+#loading-spinner {
+    text-align: center;
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
 }
 
-/* Animasi loader baru (lebih modern) */
 .loader {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    display: inline-block;
-    border-top: 4px solid #007bff;
-    border-right: 4px solid transparent;
+    margin-bottom: 16px;
+    /* Animasi loader neon */
+    border: 5px solid var(--border-color);
+    border-top-color: var(--primary-neon);
+    border-left-color: var(--secondary-neon);
     animation: spin 1s linear infinite;
-    margin: 20px auto 10px;
 }
 
 @keyframes spin {
@@ -122,66 +253,49 @@ p {
     100% { transform: rotate(360deg); }
 }
 
-.result-container {
-    margin-top: 24px;
+#result-container {
     width: 100%;
-    /* Menjaga rasio aspek kotak (1:1) */
-    position: relative;
-    padding-bottom: 100%; /* Ini trik untuk aspect-ratio 1:1 */
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    display: none; /* Default tersembunyi */
+    height: 100%;
+    animation: fadeUp 0.5s ease; /* Animasi fade-up */
 }
 
 #result-image {
-    /* Gambar mengisi penuh kontainer */
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Gambar akan ter-crop, bukan gepeng */
-    border-radius: 12px;
-    border: 1px solid #eee;
+    object-fit: cover; /* Mencegah gambar gepeng */
+    border-radius: 8px;
+    /* Efek glow di tepi frame */
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.3); 
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* =================================
-   RESPONSIVE (Tampilan HP)
+   8. RESPONSIVE (TAMPILAN HP)
    ================================= */
-@media (max-width: 600px) {
-    body {
-        padding: 15px;
+@media (max-width: 900px) {
+    .main-content {
+        grid-template-columns: 1fr; /* Kolom menumpuk */
     }
-
-    .container {
-        padding: 24px 20px;
+    
+    .image-panel {
+        min-height: 300px; /* Perkecil tinggi di HP */
     }
-
-    .input-group {
-        flex-direction: column; /* Input dan tombol akan menumpuk */
+    
+    .nav-title {
+        display: none; /* Sembunyikan judul di HP */
     }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    p {
-        font-size: 15px;
-        margin-bottom: 24px;
-    }
-
-    .result-container {
-        /*
-          Di HP, kita tidak paksa 1:1. Kita biarkan gambar
-          menentukan tingginya sendiri agar tidak ter-crop.
-          Ganti ini jika Anda lebih suka 1:1.
-        */
-        padding-bottom: 0; /* Hapus paksa 1:1 */
-        height: auto;
-    }
-
-    #result-image {
-        position: relative; /* Hapus posisi absolut */
-        height: auto; /* Biarkan tinggi gambar otomatis */
+    
+    .navbar {
+        padding: 16px 5%;
     }
 }

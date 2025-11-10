@@ -1,6 +1,25 @@
 // File: /script.js
 // (Versi FINAL - Mengatasi bug CSS dan Loading)
 
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const body = document.body;
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        
+        // Ubah ikon tombol
+        const icon = themeToggleBtn.querySelector('i');
+        if (body.classList.contains('light-mode')) {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        } else {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     
     console.log("Javascript terhubung!");
@@ -12,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultImage = document.getElementById('result-image');
     // INI YANG PENTING UNTUK CSS BARU
     const resultContainer = document.querySelector('.result-container'); 
+    const errorBox = document.getElementById('error-message');
+    
 
     // Pastikan semua elemen penting ada
     if (!promptInput || !generateBtn || !loadingSpinner || !resultImage || !resultContainer) {
@@ -37,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingSpinner.style.display = 'block';
         resultContainer.style.display = 'none'; // Sembunyikan container hasil lama
         generateBtn.disabled = true; 
+
+        if (errorBox) errorBox.style.display = 'none';
 
         try {
             // 4. Kirim permintaan ke backend
@@ -70,9 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
             resultContainer.style.display = 'block'; // <-- INI PERBAIKANNYA
 
         } catch (error) {
-            // 7. Tangani SEMUA error
-            console.error('Error:', error);
-            alert('Terjadi kesalahan: ' + error.message);
+           console.error('Error:', error);
+            
+            // --- GANTI 'alert(...)' DENGAN KODE INI ---
+            if (errorBox) {
+                errorBox.textContent = 'Terjadi kesalahan: ' + error.message;
+                errorBox.style.display = 'block';
+            } else {
+                // Fallback jika error box tidak ada
+                alert('Terjadi kesalahan: ' + error.message);
+            }
         
         } finally {
             // 8. Selesai (UI Cleanup)

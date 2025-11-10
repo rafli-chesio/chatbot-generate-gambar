@@ -3,33 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-to-Image AI Generator</title>
+    <title>AI Image Generator</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-mode"> <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-bolt"></i>
+            <span>FlashGen</span>
+        </div>
+        <div class="nav-title">
+            AI Image Generator
+        </div>
+        <div class="theme-toggle" id="theme-toggle-btn">
+            <i class="fa-solid fa-sun"></i>
+        </div>
+    </header>
 
-    <div class="container">
-        <h1>Text-to-Image AI Generator</h1>
-        <p>Gunakan arsitektur yang aman (Client-Server) dengan Vercel & Gemini API.</p>
-        
-        <div class="input-group">
-            <input type="text" id="prompt-input" placeholder="Masukkan prompt (cth: kucing astronot di bulan)">
-            <button id="generate-btn">Generate</button>
-        </div>
-        
-        <div id="loading-spinner" class="loader-container" style="display: none;">
-            <div class="loader"></div>
-            <p>Sedang membuat gambar...</p>
-        </div>
+    <main class="main-container">
+        <div class="main-content">
+            
+            <section class="controls-panel">
+                <h2>Create Your Vision</h2>
+                <p>Masukkan deskripsi detail untuk menghasilkan gambar unik dengan AI.</p>
+                
+                <div class="form-group">
+                    <label for="prompt-input">Prompt</label>
+                    <textarea id="prompt-input" rows="4" placeholder="Cth: Kucing astronot sinematik, duduk di bulan, melihat ke bumi, 4k"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="style-select">Gaya Gambar</label>
+                    <select id="style-select">
+                        <option value="cinematic">Sinematik</option>
+                        <option value="anime">Anime</option>
+                        <option value="photorealistic">Foto Realistis</option>
+                        <option value="low_poly">Low Poly</option>
+                    </select>
+                </div>
 
-        <div class="result-container" style="display: none;">
-            <img id="result-image" src="" alt="Gambar yang dihasilkan AI">
+                <button id="generate-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Generate
+                </button>
+                
+                <div id="error-message" class="error-box" style="display: none;">
+                    </div>
+            </section>
+            
+            <section class="image-panel">
+                <div id="loading-spinner" style="display: none;">
+                    <div class="loader"></div>
+                    <p>Generating your masterpiece...</p>
+                </div>
+                
+                <div id="result-container" style="display: none;">
+                    <img id="result-image" src="" alt="Gambar yang dihasilkan AI">
+                </div>
+            </section>
+            
         </div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>

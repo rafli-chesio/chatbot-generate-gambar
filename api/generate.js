@@ -1,16 +1,18 @@
 // File: /api/generate.js
-// (Perbaikan FINAL - Kembali ke nama model yang benar)
+// (Versi Sederhana + PERBAIKAN SAFETY SETTINGS)
 
 import { GoogleGenAI } from "@google/genai";
 
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
+// --- KITA TAMBAHKAN KEMBALI SAFETY SETTINGS ---
 const safetySettings = [
   { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
   { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
   { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
   { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
 ];
+// --- --- --- --- --- --- --- --- --- --- --- ---
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -26,15 +28,12 @@ export default async function handler(req, res) {
     
     console.log(`Menerima prompt: "${prompt}"`);
     
-    // --- INI ADALAH PERBAIKANNYA ---
-    // Kita KEMBALI ke nama model asli.
-    // Sekarang akun Anda sudah "Aktif", ini tidak akan timeout lagi.
+    // Panggil AI DENGAN safetySettings
     const response = await genAI.models.generateContent({
-      model: "gemini-2.5-flash-image", // <-- PERUBAHAN DI SINI
+      model: "gemini-2.5-flash-image",
       contents: prompt,
-      safetySettings: safetySettings
+      safetySettings: safetySettings // <-- KITA TAMBAHKAN DI SINI
     });
-    // --- AKHIR PERBAIKAN ---
 
     const candidates = response.candidates;
 

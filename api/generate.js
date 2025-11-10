@@ -1,5 +1,5 @@
 // File: /api/generate.js
-// (Perbaikan Nama Model)
+// (Perbaikan FINAL - Kembali ke nama model yang benar)
 
 import { GoogleGenAI } from "@google/genai";
 
@@ -27,10 +27,10 @@ export default async function handler(req, res) {
     console.log(`Menerima prompt: "${prompt}"`);
     
     // --- INI ADALAH PERBAIKANNYA ---
-    // Kita ubah nama modelnya agar menyertakan "-preview-"
-    // sesuai dengan log error Google Anda sebelumnya.
+    // Kita KEMBALI ke nama model asli.
+    // Sekarang akun Anda sudah "Aktif", ini tidak akan timeout lagi.
     const response = await genAI.models.generateContent({
-      model: "gemini-2.5-flash-preview-image", // <-- PERUBAHAN DI SINI
+      model: "gemini-2.5-flash-image", // <-- PERUBAHAN DI SINI
       contents: prompt,
       safetySettings: safetySettings
     });
@@ -38,7 +38,6 @@ export default async function handler(req, res) {
 
     const candidates = response.candidates;
 
-    // ... (Sisa kode 'if (candidates ...)' Anda tetap sama)
     if (candidates && 
         candidates[0].content &&
         candidates[0].content.parts &&
@@ -51,7 +50,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ base64Image: base64ImageString });
     }
     
-    // ... (Sisa kode 'else if (response.promptFeedback ...)' Anda tetap sama)
     else if (response.promptFeedback && response.promptFeedback.blockReason) {
       const blockReason = response.promptFeedback.blockReason;
       console.error(`Prompt diblokir oleh Google AI. Alasan: ${blockReason}`);
@@ -62,7 +60,6 @@ export default async function handler(req, res) {
       });
     }
     
-    // ... (Sisa kode 'else {...}' Anda tetap sama)
     else {
       console.error("Tidak ada data gambar (inlineData) ditemukan. Respons tidak diketahui:");
       console.log("Full API Response:", JSON.stringify(response, null, 2));

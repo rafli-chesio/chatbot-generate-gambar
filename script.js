@@ -29,13 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const loadingSpinner = document.getElementById('loading-spinner');
     const resultImage = document.getElementById('result-image');
-    // INI YANG PENTING UNTUK CSS BARU
     const resultContainer = document.querySelector('.result-container'); 
     const errorBox = document.getElementById('error-message');
-    
+    const styleSelect = document.getElementById('style-select');
 
     // Pastikan semua elemen penting ada
-    if (!promptInput || !generateBtn || !loadingSpinner || !resultImage || !resultContainer) {
+    if (!promptInput || !generateBtn || !loadingSpinner || !resultImage || !resultContainer || !styleSelect ) {
         console.error("Error: Satu atau lebih elemen DOM (input, tombol, loader, gambar, atau resultContainer) tidak ditemukan.");
         return; 
     }
@@ -46,13 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Tombol diklik!');
         
         const prompt = promptInput.value;
-
+        const style = styleSelect.value;
         if (!prompt) {
             alert('Harap masukkan prompt terlebih dahulu.');
             return;
         }
 
-        console.log(`Prompt pengguna: ${prompt}`);
+        console.log(`Prompt pengguna: ${prompt}, Style: ${style}`);
 
         // 3. Mulai proses (UI Feedback)
         loadingSpinner.style.display = 'block';
@@ -68,7 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ prompt: prompt }),
+                body: JSON.stringify({ 
+                    prompt: prompt,
+                    style: style }),
             });
 
             // 5. Tangani respons dari backend

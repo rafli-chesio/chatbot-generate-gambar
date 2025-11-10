@@ -1,3 +1,4 @@
+// Versi 5.0 - Paksa deploy ulang DENGAN safetySettings
 // File: /api/generate.js
 // (Versi Sederhana + Perbaikan Safety Filter)
 

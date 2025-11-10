@@ -1,4 +1,4 @@
-// --- KODE BARU UNTUK THEME TOGGLE ---
+// --- KODE THEME TOGGLE (TETAP SAMA) ---
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const body = document.body;
 
@@ -6,7 +6,6 @@ if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
         body.classList.toggle('light-mode');
         
-        // Ubah ikon tombol
         const icon = themeToggleBtn.querySelector('i');
         if (body.classList.contains('light-mode')) {
             icon.classList.remove('fa-sun');
@@ -17,44 +16,35 @@ if (themeToggleBtn) {
         }
     });
 }
-// --- AKHIR KODE BARU ---
+// --- AKHIR KODE THEME TOGGLE ---
 
 document.addEventListener('DOMContentLoaded', () => {
     
     console.log("Javascript terhubung!");
     
+    // Hapus referensi ke 'styleSelect'
     const promptInput = document.getElementById('prompt-input');
     const generateBtn = document.getElementById('generate-btn');
     const loadingSpinner = document.getElementById('loading-spinner');
     const resultImage = document.getElementById('result-image');
-    
-    // --- INI ADALAH PERBAIKANNYA ---
-    // Menggunakan getElementById (atau querySelector dengan '#')
     const resultContainer = document.getElementById('result-container');
-    // --- --- --- --- --- --- --- ---
-    
     const errorBox = document.getElementById('error-message');
-    const styleSelect = document.getElementById('style-select'); 
 
-    // Pastikan semua elemen penting ada
-    if (!promptInput || !generateBtn || !loadingSpinner || !resultImage || !resultContainer || !errorBox || !styleSelect) {
-        console.error("Error: Satu atau lebih elemen DOM (input, tombol, loader, gambar, resultContainer, errorBox, atau styleSelect) tidak ditemukan.");
-        // Kita periksa satu per satu untuk debug
-        if (!resultContainer) console.error("resultContainer tidak ditemukan!");
-        // ... (dan seterusnya)
+    // Hapus 'styleSelect' dari pemeriksaan
+    if (!promptInput || !generateBtn || !loadingSpinner || !resultImage || !resultContainer || !errorBox) {
+        console.error("Error: Satu atau lebih elemen DOM (input, tombol, loader, gambar, resultContainer, atau errorBox) tidak ditemukan.");
         return; 
     }
 
-    // 2. Tambahkan event listener ke tombol "Generate"
+    // Tambahkan event listener ke tombol "Generate"
     generateBtn.addEventListener('click', async () => {
         
         console.log('Tombol diklik!');
         
+        // Hanya ambil 'prompt'
         const prompt = promptInput.value;
-        const style = styleSelect.value; 
 
         if (!prompt) {
-            // Tampilkan error di errorBox, bukan alert
             if (errorBox) {
                 errorBox.textContent = 'Harap masukkan prompt terlebih dahulu.';
                 errorBox.style.display = 'block';
@@ -64,28 +54,27 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log(`Prompt pengguna: ${prompt}, Style: ${style}`);
+        console.log(`Prompt pengguna: ${prompt}`); // Log disederhanakan
 
-        // 3. Mulai proses (UI Feedback)
+        // ... (UI Feedback tetap sama)
         loadingSpinner.style.display = 'block';
         resultContainer.style.display = 'none';
         generateBtn.disabled = true;
         if (errorBox) errorBox.style.display = 'none';
 
         try {
-            // 4. Kirim permintaan ke backend
+            // Kirim HANYA 'prompt'
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    prompt: prompt,
-                    style: style 
+                    prompt: prompt 
                 }),
             });
 
-            // 5. Tangani respons dari backend
+            // ... (Sisa 'if (!response.ok)' tetap sama)
             if (!response.ok) {
                 const errorData = await response.json();
                 let errorMessage = errorData.error || 'Gagal menghasilkan gambar.';
@@ -95,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errorMessage);
             }
 
-            // 6. Tangani respons sukses (Jalur Sukses)
+            // ... (Sisa 'try...catch...finally' tetap sama)
             const data = await response.json();
             
             if (!data.base64Image) {
@@ -106,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             resultContainer.style.display = 'block'; 
 
         } catch (error) {
-            // 7. Tangani SEMUA error
             console.error('Error:', error);
             if (errorBox) {
                 errorBox.textContent = 'Terjadi kesalahan: ' + error.message;
@@ -116,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         
         } finally {
-            // 8. Selesai (UI Cleanup)
             loadingSpinner.style.display = 'none';
             generateBtn.disabled = false;
         }

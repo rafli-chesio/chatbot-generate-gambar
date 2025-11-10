@@ -1,5 +1,5 @@
 // File: /api/generate.js
-// (Versi BARU dengan Prompt Engineering)
+// (Versi Disederhanakan)
 
 import { GoogleGenAI } from "@google/genai";
 
@@ -13,30 +13,7 @@ const safetySettings = [
   { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
 ];
 
-// --- FUNGSI BARU UNTUK PROMPT ENGINEERING ---
-function getEnhancedPrompt(prompt, style) {
-    let stylePrompt = "";
-    switch (style) {
-        case 'cinematic':
-            stylePrompt = "foto sinematik, pencahayaan dramatis, detail tinggi, 4k";
-            break;
-        case 'anime':
-            stylePrompt = "gaya anime, gambar digital, seni konsep, 2D, berwarna cerah";
-            break;
-        case 'photorealistic':
-            stylePrompt = "foto sangat realistis, tajam, seperti diambil dengan kamera DSLR, pencahayaan alami";
-            break;
-        case 'low_poly':
-            stylePrompt = "gaya low-poly, 3D render, warna solid, geometris";
-            break;
-        default:
-            stylePrompt = "kualitas tinggi"; // Default jika tidak ada style
-    }
-    
-    // Gabungkan prompt pengguna dengan gaya yang dipilih
-    return `${prompt}, ${stylePrompt}`;
-}
-// --- --- --- --- --- --- --- --- --- ---
+// --- FUNGSI 'getEnhancedPrompt' SUDAH DIHAPUS ---
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -44,31 +21,27 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Ambil 'prompt' DAN 'style' dari body
-    const { prompt, style } = req.body; 
+    // Ambil HANYA 'prompt'
+    const { prompt } = req.body; 
     
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });
     }
-
-    // 2. BUAT PROMPT BARU
-    const enhancedPrompt = getEnhancedPrompt(prompt, style);
     
-    console.log(`Menerima prompt: "${prompt}", Style: "${style}"`);
-    console.log(`Mengirim prompt ke AI: "${enhancedPrompt}"`);
+    console.log(`Menerima prompt: "${prompt}"`);
     
-    // 3. Panggil AI dengan prompt yang sudah disempurnakan
+    // Panggil AI hanya dengan 'prompt'
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
-      contents: enhancedPrompt, // <-- Gunakan prompt baru
+      contents: prompt, // <-- Kembali menggunakan prompt asli
       safetySettings: safetySettings
     });
 
     const candidates = response.candidates;
 
-    // ... (Sisa kode 'if (candidates ...)' Anda tetap sama) ...
-    // ... (Sisa kode 'else if (response.promptFeedback ...)' Anda tetap sama) ...
-    // ... (Sisa kode 'else {...}' Anda tetap sama) ...
+    // ... (Sisa kode 'if (candidates ...)' Anda tetap sama)
+    // ... (Sisa kode 'else if (response.promptFeedback ...)' Anda tetap sama)
+    // ... (Sisa kode 'else {...}' Anda tetap sama)
 
   } catch (error) {
     console.error('Error calling Google AI API:', error.message, error.stack);

@@ -1,6 +1,6 @@
-// Versi 5.0 - Paksa deploy ulang DENGAN safetySettings
+// Versi 6.0 - PAKSA deploy safety settings
 // File: /api/generate.js
-// (Versi Sederhana + Perbaikan Safety Filter)
+// (Versi Sederhana + PERBAIKAN SAFETY SETTINGS)
 
 import { GoogleGenAI } from "@google/genai";
 
@@ -21,7 +21,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Ambil HANYA 'prompt'
     const { prompt } = req.body; 
     
     if (!prompt) {

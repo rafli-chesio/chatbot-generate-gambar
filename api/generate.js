@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     
     console.log(`Menerima prompt: "${prompt}"`);
     
-    const response = await genAI.models.generateContent({
+    const response = await genAI.models.generateImage({
       model: "gemini-2.5-flash-image",
       contents: prompt,
       safetySettings: safetySettings

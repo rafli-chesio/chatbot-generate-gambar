@@ -1,15 +1,19 @@
-
+// File: /api/generate.js
+// (Perbaikan FINAL: Set Safety Filter ke BLOCK_NONE)
 
 import { GoogleGenAI } from "@google/genai";
 
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
+// --- INI ADALAH PERBAIKANNYA ---
+// Kita akan menonaktifkan total filter yang terlalu sensitif
 const safetySettings = [
-  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
 ];
+// --- --- --- --- --- --- --- --- --- --- --- ---
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,9 +21,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    
-    console.log("--- MENJALANKAN BACKEND V7 DENGAN SAFETY SETTINGS ---");
-    
     const { prompt } = req.body; 
     
     if (!prompt) {
@@ -28,10 +29,11 @@ export default async function handler(req, res) {
     
     console.log(`Menerima prompt: "${prompt}"`);
     
+    // Panggil AI dengan safety settings yang paling longgar
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
       contents: prompt,
-      safetySettings: safetySettings
+      safetySettings: safetySettings // <-- Menggunakan setelan BLOCK_NONE
     });
 
     const candidates = response.candidates;

@@ -1,14 +1,16 @@
-
+// File: /api/generate.js
+// (Versi FINAL STABIL: Sederhana + BLOCK_MEDIUM_AND_ABOVE)
 
 import { GoogleGenAI } from "@google/genai";
 
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
+// --- KITA KEMBALIKAN KE SETELAN YANG BERHASIL ---
 const safetySettings = [
   { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: BLOCK_MEDIUM_AND_ABOVE },
-  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: BLOCK_MEDIUM_AND_ABOVE },
-  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: BLOCK_MEDIUM_AND_ABOVE },
+  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
 ];
 // --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -26,10 +28,11 @@ export default async function handler(req, res) {
     
     console.log(`Menerima prompt: "${prompt}"`);
     
+    // Panggil AI dengan prompt sederhana + safety settings
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
       contents: prompt,
-      safetySettings: safetySettings 
+      safetySettings: safetySettings // <-- Menggunakan setelan MEDIUM
     });
 
     const candidates = response.candidates;

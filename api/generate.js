@@ -5,10 +5,10 @@ import { GoogleGenAI } from "@google/genai";
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
 const safetySettings = [
-  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: BLOCK_MEDIUM_AND_ABOVE },
+  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: BLOCK_MEDIUM_AND_ABOVE },
+  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: BLOCK_MEDIUM_AND_ABOVE },
 ];
 // --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
       contents: prompt,
-      safetySettings: safetySettings // <-- Menggunakan setelan BLOCK_NONE
+      safetySettings: safetySettings 
     });
 
     const candidates = response.candidates;

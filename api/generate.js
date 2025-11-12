@@ -1,12 +1,9 @@
-// File: /api/generate.js
-// (Perbaikan FINAL: Set Safety Filter ke BLOCK_NONE)
+
 
 import { GoogleGenAI } from "@google/genai";
 
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
-// --- INI ADALAH PERBAIKANNYA ---
-// Kita akan menonaktifkan total filter yang terlalu sensitif
 const safetySettings = [
   { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
   { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
@@ -29,7 +26,6 @@ export default async function handler(req, res) {
     
     console.log(`Menerima prompt: "${prompt}"`);
     
-    // Panggil AI dengan safety settings yang paling longgar
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
       contents: prompt,

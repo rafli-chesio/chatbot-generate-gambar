@@ -16,13 +16,12 @@ if (themeToggleBtn) {
         }
     });
 }
-// --- AKHIR KODE THEME TOGGLE ---
+
 
 document.addEventListener('DOMContentLoaded', () => {
     
     console.log("Javascript terhubung!");
     
-    // Hapus referensi ke 'styleSelect'
     const promptInput = document.getElementById('prompt-input');
     const generateBtn = document.getElementById('generate-btn');
     const loadingSpinner = document.getElementById('loading-spinner');
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         console.log('Tombol diklik!');
         
-        // Hanya ambil 'prompt'
+  
         const prompt = promptInput.value;
 
         if (!prompt) {
@@ -54,16 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log(`Prompt pengguna: ${prompt}`); // Log disederhanakan
+        console.log(`Prompt pengguna: ${prompt}`); 
 
-        // ... (UI Feedback tetap sama)
+        
         loadingSpinner.style.display = 'block';
         resultContainer.style.display = 'none';
         generateBtn.disabled = true;
         if (errorBox) errorBox.style.display = 'none';
 
         try {
-            // Kirim HANYA 'prompt'
+        
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
             });
 
-            // ... (Sisa 'if (!response.ok)' tetap sama)
             if (!response.ok) {
                 const errorData = await response.json();
                 let errorMessage = errorData.error || 'Gagal menghasilkan gambar.';
@@ -84,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errorMessage);
             }
 
-            // ... (Sisa 'try...catch...finally' tetap sama)
             const data = await response.json();
             
             if (!data.base64Image) {

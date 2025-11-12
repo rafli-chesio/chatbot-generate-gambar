@@ -1,5 +1,4 @@
-// File: /api/generate.js
-// (Versi Sederhana + Safety Settings + LOG BARU UNTUK TES)
+
 
 import { GoogleGenAI } from "@google/genai";
 
@@ -18,10 +17,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // --- TAMBAHKAN LOG UNIK INI ---
+    
     console.log("--- MENJALANKAN BACKEND V7 DENGAN SAFETY SETTINGS ---");
-    // --- --- --- --- --- --- --- ---
-
+    
     const { prompt } = req.body; 
     
     if (!prompt) {

@@ -1,17 +1,19 @@
 // File: /api/generate.js
-// (Perbaikan FINAL: Menerapkan ide Prompt Engineering)
+// (Perbaikan FINAL: Set Safety Filter ke BLOCK_NONE)
 
 import { GoogleGenAI } from "@google/genai";
 
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
 
-// Kita tetap gunakan 'BLOCK_ONLY_HIGH' karena ini setelan paling longgar
+// --- INI ADALAH PERBAIKANNYA ---
+// Kita akan menonaktifkan total filter yang terlalu sensitif
 const safetySettings = [
-  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
-  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
-  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
-  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
 ];
+// --- --- --- --- --- --- --- --- --- --- --- ---
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -25,18 +27,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Prompt is required' });
     }
     
-    // --- INI ADALAH IDE ANDA (PROMPT ENGINEERING) ---
-    const engineeredPrompt = `Generate a high-quality, professional image of: ${prompt}`;
-    // --- --- --- --- --- --- --- --- --- --- --- ---
-
-    console.log(`Prompt Asli: "${prompt}"`);
-    console.log(`Engineered Prompt: "${engineeredPrompt}"`);
+    console.log(`Menerima prompt: "${prompt}"`);
     
-    // Panggil AI dengan prompt baru + safety settings
+    // Panggil AI dengan safety settings yang paling longgar
     const response = await genAI.models.generateContent({
       model: "gemini-2.5-flash-image",
-      contents: engineeredPrompt, // <-- Menggunakan prompt baru
-      safetySettings: safetySettings
+      contents: prompt,
+      safetySettings: safetySettings // <-- Menggunakan setelan BLOCK_NONE
     });
 
     const candidates = response.candidates;

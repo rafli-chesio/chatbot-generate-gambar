@@ -1,15 +1,9 @@
-
+// File: /api/generate.js
+// (Versi BARU - Menggunakan IMAGEN 3.0)
 
 import { GoogleGenAI } from "@google/genai";
 
 const genAI = new GoogleGenAI(process.env.GOOGLE_API_KEY);
-
-const safetySettings = [
-  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-];
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,9 +11,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    
-    console.log("--- MENJALANKAN BACKEND V7 DENGAN SAFETY SETTINGS ---");
-    
     const { prompt } = req.body; 
     
     if (!prompt) {
@@ -27,45 +18,42 @@ export default async function handler(req, res) {
     }
     
     console.log(`Menerima prompt: "${prompt}"`);
+    console.log("--- MENCOBA MODEL 'IMAGEN 3.0' ---");
     
-    const response = await genAI.models.generateContent({
-      model: "gemini-2.5-flash-image",
-      contents: prompt,
-      safetySettings: safetySettings
+    // Panggil API menggunakan sintaks 'generateImages'
+    const response = await genAI.models.generateImages({
+      // --- PERUBAHAN DI SINI ---
+      model: "imagen-3.0-generate-002", // Sesuai dokumentasi Anda
+      // --- --- --- --- --- --- ---
+      prompt: prompt,
+      config: {
+          numberOfImages: 1, // Kita hanya butuh 1 gambar
+      },
     });
 
-    const candidates = response.candidates;
+    // 'response' berisi array 'generatedImages'
+    if (response.generatedImages && response.generatedImages.length > 0) {
+        
+        const generatedImage = response.generatedImages[0];
+        const imgBytes = generatedImage.imageBytes; 
+        
+        // Ubah data biner (Buffer) menjadi string Base64
+        const base64ImageString = Buffer.from(imgBytes).toString('base64');
+        
+        console.log("Sukses menghasilkan gambar dari IMAGEN 3.0.");
+        
+        return res.status(200).json({ base64Image: base64ImageString });
 
-    if (candidates && 
-        candidates[0].content &&
-        candidates[0].content.parts &&
-        candidates[0].content.parts[0].inlineData) {
-      
-      const inlineData = candidates[0].content.parts[0].inlineData;
-      const base64ImageString = inlineData.data;
-
-      console.log("Sukses menghasilkan gambar.");
-      return res.status(200).json({ base64Image: base64ImageString });
-    }
-    
-    else if (response.promptFeedback && response.promptFeedback.blockReason) {
-      const blockReason = response.promptFeedback.blockReason;
-      console.error(`Prompt diblokir oleh Google AI. Alasan: ${blockReason}`);
-      
-      return res.status(400).json({
-        error: `Gagal: Prompt Anda diblokir oleh AI.`,
-        details: `Alasan: ${blockReason}`
-      });
-    }
-    
-    else {
-      console.error("Tidak ada data gambar (inlineData) ditemukan. Respons tidak diketahui:");
-      console.log("Full API Response:", JSON.stringify(response, null, 2));
-      return res.status(500).json({ error: 'Failed to generate image. Invalid API response from Google.' });
+    } else {
+        // Ini terjadi jika Imagen gagal diam-diam
+        console.error("Gagal mengambil gambar dari Imagen 3.0, respons tidak diketahui.");
+        console.log("Full API Response:", JSON.stringify(response, null, 2));
+        return res.status(500).json({ error: 'Failed to generate image. Invalid API response from Imagen.' });
     }
 
   } catch (error) {
-    console.error('Error calling Google AI API:', error.message, error.stack);
+    // Tangani error jika API key-nya tidak diizinkan, dll.
+    console.error('Error calling Google AI (Imagen 3.0) API:', error.message, error.stack);
     return res.status(500).json({ error: 'Failed to call Google AI API', details: error.message });
   }
 }
